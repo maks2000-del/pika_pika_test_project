@@ -5,14 +5,14 @@ import 'package:pika_pika_test_project/presentation/widgets/pokemon_list_item.da
 import '../../widgets/bottom_loader.dart';
 import 'bloc/home_bloc.dart';
 
-class PostsList extends StatefulWidget {
-  const PostsList({Key? key}) : super(key: key);
+class PokemonsList extends StatefulWidget {
+  const PokemonsList({Key? key}) : super(key: key);
 
   @override
-  State<PostsList> createState() => _PostsListState();
+  State<PokemonsList> createState() => _PokemonsListState();
 }
 
-class _PostsListState extends State<PostsList> {
+class _PokemonsListState extends State<PokemonsList> {
   final _scrollController = ScrollController();
 
   @override
@@ -59,7 +59,7 @@ class _PostsListState extends State<PostsList> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<HomeBloc>().add(PostFetched());
+    if (_isBottom) context.read<HomeBloc>().add(PokemonsFetched());
   }
 
   bool get _isBottom {

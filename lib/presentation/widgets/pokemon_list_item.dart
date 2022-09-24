@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../data/models/pokemon_item.dart';
+import '../pages/detailed_info/detailed_info_page.dart';
 
 class PokemonListItem extends StatelessWidget {
   const PokemonListItem({Key? key, required this.pokemonItem})
@@ -10,11 +12,17 @@ class PokemonListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return Material(
-      child: ListTile(
-        leading: Text(pokemonItem.urlId, style: textTheme.caption),
-        title: Text(pokemonItem.name),
+      child: GestureDetector(
+        child: ListTile(
+          leading: Text(pokemonItem.urlId),
+          title: Text(pokemonItem.name),
+        ),
+        onTap: () => Get.to(
+          () => DetailedInfoPage(
+            pokemonUrl: pokemonItem.urlId,
+          ),
+        ),
       ),
     );
   }

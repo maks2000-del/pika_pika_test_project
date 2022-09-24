@@ -1,5 +1,5 @@
 part of 'home_bloc.dart';
 
-abstract class PostEvent {}
+abstract class HomeEvent {}
 
-class PostFetched extends PostEvent {}
+class PokemonsFetched extends HomeEvent {}

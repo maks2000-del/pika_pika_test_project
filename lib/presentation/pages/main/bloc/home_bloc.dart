@@ -19,9 +19,9 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
   };
 }
 
-class HomeBloc extends Bloc<PostEvent, HomeState> {
+class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc({required this.httpClient}) : super(const HomeState()) {
-    on<PostFetched>(
+    on<PokemonsFetched>(
       _onPostFetched,
       transformer: throttleDroppable(throttleDuration),
     );
@@ -30,7 +30,7 @@ class HomeBloc extends Bloc<PostEvent, HomeState> {
   final http.Client httpClient;
 
   Future<void> _onPostFetched(
-    PostFetched event,
+    PokemonsFetched event,
     Emitter<HomeState> emit,
   ) async {
     if (state.hasReachedMax) return;
@@ -55,7 +55,7 @@ class HomeBloc extends Bloc<PostEvent, HomeState> {
                 hasReachedMax: false,
               ),
             );
-    } catch (_) {
+    } catch (e) {
       emit(state.copyWith(status: FetchStatus.failure));
     }
   }
@@ -63,16 +63,19 @@ class HomeBloc extends Bloc<PostEvent, HomeState> {
   Future<List<PokemonItem>> _fetchPosts([int startIndex = 0]) async {
     final response = await httpClient.get(
       Uri.https(
-        'pokeapi.co/api/v2',
-        '/pokemon?',
+        'pokeapi.co',
+        '/api/v2/pokemon',
         <String, String>{'offset': '$startIndex', 'limit': '$_pokemonLimit'},
       ),
     );
     if (response.statusCode == 200) {
-      final body = json.decode(response.body) as List;
-      return body.map((dynamic json) {
-        return PokemonItem.fromJson(json as String);
-      }).toList();
+      final resultList = <PokemonItem>[];
+      final body = json.decode(response.body) as Map;
+
+      for (final pokemonDataMap in body['results']) {
+        resultList.add(PokemonItem.fromMap(pokemonDataMap));
+      }
+      return resultList;
     }
     throw Exception('error fetching posts');
   }
