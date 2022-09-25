@@ -20,14 +20,14 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 }
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  final http.Client httpClient;
+
   HomeBloc({required this.httpClient}) : super(const HomeState()) {
     on<PokemonsFetched>(
       _onPostFetched,
       transformer: throttleDroppable(throttleDuration),
     );
   }
-
-  final http.Client httpClient;
 
   Future<void> _onPostFetched(
     PokemonsFetched event,

@@ -11,7 +11,7 @@ part 'detailed_info_state.dart';
 
 class DetailedInfoBloc extends Bloc<DetailedInfoEvent, DetailedInfoState> {
   DetailedInfoBloc({required this.httpClient})
-      : super(const DetailedInfoState()) {
+      : super(DetailedInfoState.initial()) {
     on<PokemonFetched>(
       _onPokemonFetched,
     );
@@ -38,12 +38,11 @@ class DetailedInfoBloc extends Bloc<DetailedInfoEvent, DetailedInfoState> {
     }
   }
 
-  Future<Pokemon> _fetchPokemon([int startIndex = 0]) async {
+  Future<Pokemon> _fetchPokemon([int startIndex = 1]) async {
     final response = await httpClient.get(
       Uri.https(
         'pokeapi.co',
-        '/api/v2/pokemon',
-        <String, String>{'offset': '$startIndex'},
+        '/api/v2/pokemon/$startIndex/',
       ),
     );
     if (response.statusCode == 200) {
