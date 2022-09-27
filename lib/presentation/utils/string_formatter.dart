@@ -1,6 +1,8 @@
 class StringFormatter {
-  static int consvertUrlToId(String url) {
-    url.split('/');
-    return 0;
+  static String consvertUrlToId(String url) {
+    final list = url.split('/');
+    final idPosition = list.indexOf('pokemon') + 1;
+
+    return list[idPosition];
   }
 }

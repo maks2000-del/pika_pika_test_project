@@ -11,7 +11,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return ThemeProvider(
       theme: darkTheme,
-      child: const MaterialApp(home: HomePage()),
+      child: const MaterialApp(
+        home: HomePage(),
+      ),
     );
   }
 }

@@ -1,12 +1,12 @@
 const nullFieldFromApi = 'unknown';
 
 class Pokemon {
-  String? name;
-  String? frontImage;
-  List<String>? types;
-  int? weight;
-  int? height;
-  bool? isDefault;
+  String name;
+  String frontImage;
+  List<String> types;
+  int weight;
+  int height;
+  bool isDefault;
 
   Pokemon({
     required this.name,
@@ -16,6 +16,10 @@ class Pokemon {
     required this.height,
     required this.isDefault,
   });
+
+  @override
+  List<Object> get props =>
+      [name, frontImage, types, weight, height, isDefault];
 
   factory Pokemon.fromMap(Map<String, dynamic> map) {
     final resultList = <String>[];
@@ -27,7 +31,7 @@ class Pokemon {
 
     return Pokemon(
       name: map['name'] ?? nullFieldFromApi,
-      frontImage: map['front_default'] ?? nullFieldFromApi,
+      frontImage: map['sprites']['front_default'] ?? nullFieldFromApi,
       types: resultList,
       weight: map['weight'] ?? nullFieldFromApi,
       height: map['height'] ?? nullFieldFromApi,

@@ -16,7 +16,7 @@ class LocalDataSource implements ILocalDataSource {
 
   @override
   Future<String?> getPokemonById() {
-    return _prefs.then((prefs) => prefs.getString(key));
+    //return _prefs.then((prefs) => prefs.getString(key));
     // TODO: implement getPokemonById
     throw UnimplementedError();
   }
@@ -28,8 +28,8 @@ class LocalDataSource implements ILocalDataSource {
   }
 
   @override
-  void savePokemonInfo(Pokemon pokemon) {
-    _prefs.then((prefs) => prefs.setString(key, id));
+  void savePokemonById(Pokemon pokemon) {
+    //_prefs.then((prefs) => prefs.setString(key, id));
     // TODO: implement savePokemonInfo
   }
 

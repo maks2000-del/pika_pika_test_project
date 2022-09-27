@@ -7,12 +7,12 @@ class DetailedInfoState {
   DetailedInfoState.initial()
       : this(
           pokemonInfo: Pokemon(
-            frontImage: null,
-            height: null,
-            isDefault: null,
-            name: null,
-            types: null,
-            weight: null,
+            frontImage: '',
+            height: 0,
+            isDefault: true,
+            name: '',
+            types: <String>[],
+            weight: 0,
           ),
           status: FetchStatus.initial,
         );

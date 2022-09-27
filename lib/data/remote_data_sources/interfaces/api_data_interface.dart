@@ -1,4 +1,4 @@
 abstract class IRemoteDataSource {
-  Future<String?> getPokemonById();
-  Future<String?> getPokemonItems();
+  Future<dynamic> getPokemonById(String pokemonId);
+  Future<dynamic> getPokemonItems([int startIndex = 0]);
 }

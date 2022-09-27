@@ -5,7 +5,7 @@ abstract class ILocalDataSource {
   Future<String?> getPokemonById();
   Future<String?> getPokemonItems();
 
-  void savePokemonInfo(Pokemon pokemon);
+  void savePokemonById(Pokemon pokemon);
   void savePokemonItems(List<PokemonItem> pokemoItems);
 
   void clearData();
