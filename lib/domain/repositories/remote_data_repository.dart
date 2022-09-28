@@ -14,7 +14,7 @@ class RemoteDataRepository implements IRemoteDataRepository {
     final response = await remoteDataSource.getPokemonById(pokemonId);
 
     final body = json.decode(response.body);
-    return Pokemon.fromMap(body);
+    return Pokemon.fromApiMap(body);
   }
 
   @override
