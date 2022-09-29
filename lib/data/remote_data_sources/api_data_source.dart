@@ -25,7 +25,7 @@ class RemoteDataSource implements IRemoteDataSource {
   }
 
   @override
-  Future<dynamic> getPokemonById(String pokemonId) async {
+  Future<dynamic> getPokemonById(int pokemonId) async {
     final response = await httpClient.get(
       Uri.https(
         'pokeapi.co',

@@ -1,39 +1,41 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-const String tableDates = 'dates';
-const String columnDateId = 'date_id';
-const String columnCoupleId = 'couple_id';
-const String columnTitle = 'title';
-const String columnDate = 'date';
-const String columnBgColour = 'bg_color_id';
+const String tablePokemonItems = 'pokemon_items';
+const String columnPokemonItemId = 'id';
+const String columnPokemonItemName = 'name';
+const String columnPokemonItemUrl = 'url';
 
-const String tableMemorys = 'memorys';
-const String columnMemoryId = 'memory_id';
-const String columnDescription = 'description';
-const String columnLocation = 'location';
-const String columnPhotoPath = 'photo_path';
+const String tablePokemons = 'pokemons';
+const String columnPokemonId = 'id';
+const String columnPokemonName = 'name';
+const String columnPokemonPhoto = 'front_default';
+const String columnPokemonTypes = 'types';
+const String columnPokemonHeight = 'weight';
+const String columnPokemonWeight = 'height';
+const String columnPokemonIsDefault = 'is_default';
 
 class SqliteDataBaseOpenHelper {
   Future<Database> initDatabase() async {
     final database = openDatabase(
-      join(await getDatabasesPath(), 'main.db'),
+      join(await getDatabasesPath(), 'appttttt.db'),
       version: 1,
       onCreate: (db, version) {
         db.execute('''
-         create table $tableDates(
-        $columnDateId integer primary key autoincrement,  
-        $columnTitle text not null,
+         create table $tablePokemonItems(
+        $columnPokemonItemId integer primary key autoincrement,  
+        $columnPokemonItemName text,
+        $columnPokemonItemUrl text not null)
        ''');
         db.execute('''
-         create table $tableMemorys(
-        $columnMemoryId integer primary key autoincrement,  
-        $columnCoupleId integer,
-        $columnTitle text,
-        $columnDescription text,
-        $columnDate text,
-        $columnLocation text,
-        $columnPhotoPath text) 
+         create table $tablePokemons(
+        $columnPokemonId integer primary key autoincrement,  
+        $columnPokemonName text,
+        $columnPokemonPhoto text,
+        $columnPokemonTypes text,
+        $columnPokemonWeight integer,
+        $columnPokemonHeight integer,
+        $columnPokemonIsDefault text) 
        ''');
       },
     );

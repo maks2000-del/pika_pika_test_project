@@ -12,7 +12,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeBloc _homeBlock = i.get<HomeBloc>();
-
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('Pokemons')),

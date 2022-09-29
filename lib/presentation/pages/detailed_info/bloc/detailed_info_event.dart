@@ -7,3 +7,5 @@ class PockemonPicked extends DetailedInfoEvent {
 
   final String id;
 }
+
+class DetailedInfoConnectionChecked extends DetailedInfoEvent {}

@@ -23,6 +23,7 @@ dependencies:
   flutter_bloc: ^8.1.1
   get: ^4.6.5
   sqflite: 
+  lottie: ^1.4.0
 
 dev_dependencies:
   flutter_test:

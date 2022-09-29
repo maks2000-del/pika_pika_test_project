@@ -10,7 +10,7 @@ class RemoteDataRepository implements IRemoteDataRepository {
   final RemoteDataSource remoteDataSource = RemoteDataSource();
 
   @override
-  Future<Pokemon> getPokemonById(String pokemonId) async {
+  Future<Pokemon> getPokemonById(int pokemonId) async {
     final response = await remoteDataSource.getPokemonById(pokemonId);
 
     final body = json.decode(response.body);

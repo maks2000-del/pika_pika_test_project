@@ -1,8 +1,6 @@
 import 'package:sqflite/sqflite.dart';
-import '../../domain/entities/pokemon.dart';
 import '../../domain/repositories/cash_data_repository.dart';
 import '../../presentation/utils/sqlite_open_helper.dart';
-import '../models/pokemon_item.dart';
 import 'interfaces/i_local_data_source.dart';
 
 class SQliteEntityDataSource implements ILocalDataSourceEntity {
@@ -11,13 +9,13 @@ class SQliteEntityDataSource implements ILocalDataSourceEntity {
   SQliteEntityDataSource(this.database);
 
   @override
-  Future<dynamic> getEntityById(String id) async {
+  Future<dynamic> getEntityById(int id) async {
     try {
-      final dbMemorysList = await database.rawQuery(
-        'SELECT * FROM $tableMemorys WHERE $columnCoupleId = ?',
+      final dbEntity = await database.rawQuery(
+        'SELECT * FROM $tablePokemons WHERE $columnPokemonId = ?',
         [id],
       );
-      return dbMemorysList;
+      return dbEntity;
     } catch (e) {
       return null;
     }
@@ -25,12 +23,10 @@ class SQliteEntityDataSource implements ILocalDataSourceEntity {
 
   @override
   Future<CashingStatus> saveEntityById(
-      String id, Map<String, dynamic> entity) async {
-    //TODO check id for no repeat
-
+      int id, Map<String, dynamic> entity) async {
     try {
       await database.insert(
-        tableMemorys,
+        tablePokemons,
         entity,
       );
       return CashingStatus.success;
@@ -51,7 +47,7 @@ class SQliteEntitiesDataSource extends ILocalDataSourceEntities {
     try {
       for (final entity in entities) {
         await database.insert(
-          tableMemorys,
+          tablePokemonItems,
           entity,
         );
       }
@@ -64,7 +60,7 @@ class SQliteEntitiesDataSource extends ILocalDataSourceEntities {
   @override
   Future<List<Map>> getEntities() async {
     List<Map> dbMemorysList =
-        await database.rawQuery('SELECT * FROM $tableMemorys');
+        await database.rawQuery('SELECT * FROM $tablePokemonItems');
 
     if (dbMemorysList.isNotEmpty) {
       return dbMemorysList;

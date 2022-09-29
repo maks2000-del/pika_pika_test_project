@@ -19,7 +19,6 @@ class Pokemon {
     required this.isDefault,
   });
 
-  @override
   List<Object> get props =>
       [name, frontImage, types, weight, height, isDefault];
 
@@ -41,25 +40,24 @@ class Pokemon {
     );
   }
 
-  factory Pokemon.fromDBMap(Map<String, dynamic> map) {
-    return Pokemon(
-      name: map['name'] ?? nullFieldFromApi,
-      frontImage: map['front_default'] ?? nullFieldFromApi,
-      types: StringFormatter.convertStringDBToList(map['types']),
-      weight: map['weight'] ?? nullFieldFromApi,
-      height: map['height'] ?? nullFieldFromApi,
-      isDefault: map['is_default'] ?? nullFieldFromApi,
-    );
-  }
+  factory Pokemon.fromDBMap(Map<String, dynamic> map) => Pokemon(
+        name: map['name'],
+        frontImage: map['front_default'],
+        types: StringFormatter.convertStringDBToList(map['types']),
+        height: map['height'],
+        weight: map['weight'],
+        isDefault: map['is_default'],
+      );
 
-  Map<String, dynamic> toDBMap() {
+  Map<String, dynamic> toDBMap(int id) {
     return {
+      'id': id,
       'name': name,
       'front_default': frontImage,
       'types': StringFormatter.convertListToDBString(types),
       'weight': weight,
       'height': height,
-      'is_default': isDefault,
+      'is_default': isDefault.toString(),
     };
   }
 }

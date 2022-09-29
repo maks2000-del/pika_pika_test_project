@@ -5,6 +5,7 @@ import 'presentation/app/app.dart';
 import 'presentation/di/injector.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   initInjector();
   runApp(
     const GetMaterialApp(

@@ -16,7 +16,7 @@ class PokemonListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final id = StringFormatter.consvertUrlToId(pokemonItem.url);
+    final id = StringFormatter.getIdFromUrl(pokemonItem.url);
 
     return Material(
       child: GestureDetector(
@@ -25,7 +25,7 @@ class PokemonListItem extends StatelessWidget {
           leading: Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: Text(
-              id,
+              id.toString(),
               style: TextStyle(
                 color: darkTheme.textColor,
                 letterSpacing: 1.0,

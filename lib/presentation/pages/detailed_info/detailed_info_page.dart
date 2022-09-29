@@ -1,9 +1,9 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:pika_pika_test_project/presentation/app/app_themes.dart';
 
-import '../../theme/theme_provider.dart';
 import '../../app/app_themes.dart';
 
 import 'bloc/detailed_info_bloc.dart';
@@ -23,7 +23,9 @@ class DetailedInfoPage extends StatelessWidget {
           return Scaffold(
             backgroundColor: darkTheme.primaryBackgroundColor,
             appBar: AppBar(
-              title: const Text('General info'),
+              title: Text(
+                'General info ${state.connection == ConnectivityResult.none ? '(offline)' : ''}',
+              ),
               centerTitle: true,
               backgroundColor: darkTheme.secondaryBackgroundColor,
               elevation: 0.0,

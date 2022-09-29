@@ -8,20 +8,25 @@ import '../../presentation/di/injector.dart';
 enum CashingStatus { success, failure }
 
 class CashDataRepository implements ILocalDataRepository {
-  final _sQliteEntityDataSource = i.get<SQliteEntityDataSource>();
-  final _sQliteEntitiesDataSource = i.get<SQliteEntitiesDataSource>();
   CashDataRepository();
 
   @override
-  Future<Pokemon> getPokemonById(String pokemonId) async {
-    final entitie = await _sQliteEntityDataSource.getEntityById(pokemonId);
-    return Pokemon.fromDBMap(entitie);
+  Future<Pokemon> getPokemonById(int pokemonId) async {
+    final entitie =
+        await i.get<SQliteEntityDataSource>().getEntityById(pokemonId);
+
+    final Pokemon pokemon = Pokemon.fromDBMap(entitie);
+
+    return pokemon;
   }
 
   @override
   Future<List<PokemonItem>> getPokemonItems([int startIndex = 0]) async {
     final pokemonItems = <PokemonItem>[];
-    final dbPokemonItems = await _sQliteEntitiesDataSource.getEntities();
+
+    final dbPokemonItems =
+        await i.get<SQliteEntitiesDataSource>().getEntities();
+
     for (final item in dbPokemonItems) {
       var pokemonItem = PokemonItem.fromMap(item as Map<String, dynamic>);
       pokemonItems.add(pokemonItem);
@@ -30,11 +35,13 @@ class CashDataRepository implements ILocalDataRepository {
   }
 
   @override
-  Future<CashingStatus> savePokemonById(
-      String pokemonId, Pokemon pokemon) async {
-    final entitie = pokemon.toDBMap();
-    final cashingStatus =
-        await _sQliteEntityDataSource.saveEntityById(pokemonId, entitie);
+  Future<CashingStatus> savePokemonById(int pokemonId, Pokemon pokemon) async {
+    final entitie = pokemon.toDBMap(pokemonId);
+
+    final cashingStatus = await i
+        .get<SQliteEntityDataSource>()
+        .saveEntityById(pokemonId, entitie);
+
     return cashingStatus;
   }
 
@@ -46,7 +53,8 @@ class CashDataRepository implements ILocalDataRepository {
       var pokemonEntitie = item.toDBMap();
       entities.add(pokemonEntitie);
     }
-    final status = await _sQliteEntitiesDataSource.saveEntities(entities);
+    final status =
+        await i.get<SQliteEntitiesDataSource>().saveEntities(entities);
     return status;
   }
 }

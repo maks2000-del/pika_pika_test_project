@@ -1,8 +1,8 @@
 import 'package:pika_pika_test_project/domain/repositories/cash_data_repository.dart';
 
 abstract class ILocalDataSourceEntity {
-  Future<dynamic> getEntityById(String id);
-  Future<CashingStatus> saveEntityById(String id, Map<String, String> entity);
+  Future<dynamic> getEntityById(int id);
+  Future<CashingStatus> saveEntityById(int id, Map<String, String> entity);
 }
 
 abstract class ILocalDataSourceEntities {
