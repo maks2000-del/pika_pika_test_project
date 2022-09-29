@@ -1,40 +1,75 @@
-import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:sqflite/sqflite.dart';
 import '../../domain/entities/pokemon.dart';
+import '../../domain/repositories/cash_data_repository.dart';
+import '../../presentation/utils/sqlite_open_helper.dart';
 import '../models/pokemon_item.dart';
 import 'interfaces/i_local_data_source.dart';
 
-class LocalDataSource implements ILocalDataSource {
-  Future<SharedPreferences> get _prefs async {
-    return await SharedPreferences.getInstance();
+class SQliteEntityDataSource implements ILocalDataSourceEntity {
+  late final Database database;
+
+  SQliteEntityDataSource(this.database);
+
+  @override
+  Future<dynamic> getEntityById(String id) async {
+    try {
+      final dbMemorysList = await database.rawQuery(
+        'SELECT * FROM $tableMemorys WHERE $columnCoupleId = ?',
+        [id],
+      );
+      return dbMemorysList;
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
-  void clearData() {
-    // TODO: implement clearData
+  Future<CashingStatus> saveEntityById(
+      String id, Map<String, dynamic> entity) async {
+    //TODO check id for no repeat
+
+    try {
+      await database.insert(
+        tableMemorys,
+        entity,
+      );
+      return CashingStatus.success;
+    } catch (e) {
+      return CashingStatus.failure;
+    }
+  }
+}
+
+class SQliteEntitiesDataSource extends ILocalDataSourceEntities {
+  late final Database database;
+
+  SQliteEntitiesDataSource(this.database);
+
+  @override
+  Future<CashingStatus> saveEntities(
+      List<Map<String, dynamic>> entities) async {
+    try {
+      for (final entity in entities) {
+        await database.insert(
+          tableMemorys,
+          entity,
+        );
+      }
+      return CashingStatus.success;
+    } catch (e) {
+      return CashingStatus.failure;
+    }
   }
 
   @override
-  Future<String?> getPokemonById() {
-    //return _prefs.then((prefs) => prefs.getString(key));
-    // TODO: implement getPokemonById
-    throw UnimplementedError();
-  }
+  Future<List<Map>> getEntities() async {
+    List<Map> dbMemorysList =
+        await database.rawQuery('SELECT * FROM $tableMemorys');
 
-  @override
-  Future<String?> getPokemonItems() {
-    // TODO: implement getPokemonItems
-    throw UnimplementedError();
-  }
-
-  @override
-  void savePokemonById(Pokemon pokemon) {
-    //_prefs.then((prefs) => prefs.setString(key, id));
-    // TODO: implement savePokemonInfo
-  }
-
-  @override
-  void savePokemonItems(List<PokemonItem> pokemoItems) {
-    // TODO: implement savePokemonItems
+    if (dbMemorysList.isNotEmpty) {
+      return dbMemorysList;
+    } else {
+      throw Exception('Error reading from DB');
+    }
   }
 }

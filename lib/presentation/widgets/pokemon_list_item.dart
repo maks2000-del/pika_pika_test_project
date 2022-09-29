@@ -16,7 +16,7 @@ class PokemonListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final id = StringFormatter.consvertUrlToId(pokemonItem.urlId);
+    final id = StringFormatter.consvertUrlToId(pokemonItem.url);
 
     return Material(
       child: GestureDetector(

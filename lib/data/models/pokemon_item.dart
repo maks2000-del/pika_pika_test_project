@@ -1,15 +1,22 @@
 class PokemonItem {
   String name;
-  String urlId;
+  String url;
 
-  List<Object> get props => [urlId, name];
+  List<Object> get props => [url, name];
 
-  PokemonItem(this.name, this.urlId);
+  PokemonItem(this.name, this.url);
 
   factory PokemonItem.fromMap(Map<String, dynamic> map) {
     return PokemonItem(
       map['name'] ?? '',
       map['url'] ?? '',
     );
+  }
+
+  Map<String, dynamic> toDBMap() {
+    return {
+      'name': name,
+      'url': url,
+    };
   }
 }
