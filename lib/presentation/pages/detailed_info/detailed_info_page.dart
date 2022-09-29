@@ -42,7 +42,10 @@ class DetailedInfoPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _pokemonAvatar(state.pokemonInfo.frontImage),
+                  _pokemonAvatar(
+                    state.pokemonInfo.frontImage,
+                    state.connection == ConnectivityResult.none,
+                  ),
                   Divider(
                     height: 60.0,
                     color: Colors.grey[800],
@@ -67,15 +70,15 @@ class DetailedInfoPage extends StatelessWidget {
     );
   }
 
-  Widget _pokemonAvatar(String imgNetworkLink) {
+  Widget _pokemonAvatar(String imgNetworkLink, bool offline) {
     return Center(
       child: CircleAvatar(
         backgroundColor: darkTheme.actionColor,
-        child: imgNetworkLink.isNotEmpty
-            ? Image.network(
+        child: offline
+            ? null
+            : Image.network(
                 imgNetworkLink,
-              )
-            : null,
+              ),
         radius: 40.0,
       ),
     );

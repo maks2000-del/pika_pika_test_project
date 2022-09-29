@@ -10,7 +10,6 @@ class DetailedInfoState {
           pokemonInfo: Pokemon(
             frontImage: '',
             height: 0,
-            isDefault: true,
             name: '',
             types: <String>[],
             weight: 0,

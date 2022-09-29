@@ -9,15 +9,15 @@ class SQliteEntityDataSource implements ILocalDataSourceEntity {
   SQliteEntityDataSource(this.database);
 
   @override
-  Future<dynamic> getEntityById(int id) async {
+  Future<List<Map>> getEntityById(int id) async {
     try {
-      final dbEntity = await database.rawQuery(
+      List<Map<String, dynamic>> dbEntity = await database.rawQuery(
         'SELECT * FROM $tablePokemons WHERE $columnPokemonId = ?',
         [id],
       );
       return dbEntity;
     } catch (e) {
-      return null;
+      throw Exception('Error reading from DB');
     }
   }
 

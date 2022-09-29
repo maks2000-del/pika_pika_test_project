@@ -8,7 +8,6 @@ class Pokemon {
   List<String> types;
   int weight;
   int height;
-  bool isDefault;
 
   Pokemon({
     required this.name,
@@ -16,11 +15,9 @@ class Pokemon {
     required this.types,
     required this.weight,
     required this.height,
-    required this.isDefault,
   });
 
-  List<Object> get props =>
-      [name, frontImage, types, weight, height, isDefault];
+  List<Object> get props => [name, frontImage, types, weight, height];
 
   factory Pokemon.fromApiMap(Map<String, dynamic> map) {
     final resultList = <String>[];
@@ -36,17 +33,15 @@ class Pokemon {
       types: resultList,
       weight: map['weight'] ?? nullFieldFromApi,
       height: map['height'] ?? nullFieldFromApi,
-      isDefault: map['is_default'] ?? nullFieldFromApi,
     );
   }
 
   factory Pokemon.fromDBMap(Map<String, dynamic> map) => Pokemon(
-        name: map['name'],
-        frontImage: map['front_default'],
+        name: map['name'] ?? '',
+        frontImage: map['front_default'] ?? '',
         types: StringFormatter.convertStringDBToList(map['types']),
-        height: map['height'],
-        weight: map['weight'],
-        isDefault: map['is_default'],
+        height: map['height'] ?? '',
+        weight: map['weight'] ?? '',
       );
 
   Map<String, dynamic> toDBMap(int id) {
@@ -57,7 +52,6 @@ class Pokemon {
       'types': StringFormatter.convertListToDBString(types),
       'weight': weight,
       'height': height,
-      'is_default': isDefault.toString(),
     };
   }
 }
