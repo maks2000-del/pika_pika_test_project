@@ -18,7 +18,7 @@ const String columnPokemonIsDefault = 'is_default';
 class SqliteDataBaseOpenHelper {
   Future<Database> initDatabase() async {
     final database = openDatabase(
-      join(await getDatabasesPath(), 'fortest.db'),
+      join(await getDatabasesPath(), 'appdb.db'),
       version: 1,
       onCreate: (db, version) {
         db.execute('''

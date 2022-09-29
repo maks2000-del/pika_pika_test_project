@@ -70,6 +70,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         final pokemonItems = await i
             .get<HomeUsecase>()
             .getPokemonItems(state.pokemonItems.length);
+        final cashingStatus =
+            await _cashDataRepository.savePokemonItems(pokemonItems);
         pokemonItems.isEmpty
             ? emit(state.copyWith(hasReachedMax: true))
             : emit(

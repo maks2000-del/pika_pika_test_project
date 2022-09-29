@@ -33,18 +33,17 @@ class DetailedInfoBloc extends Bloc<DetailedInfoEvent, DetailedInfoState> {
       if (state.status == FetchStatus.initial) {
         final id = int.parse(event.id);
         final pokemonInfo = await _homeUsecase.getPokemonById(id);
-        final cashingStatus =
-            await _cashDataRepository.savePokemonById(id, pokemonInfo);
-
-        if (cashingStatus == CashingStatus.success) {
-          print('cashed');
-        }
-        return emit(
+        emit(
           state.copyWith(
             status: FetchStatus.success,
             pokemonInfo: pokemonInfo,
           ),
         );
+        final cashingStatus =
+            await _cashDataRepository.savePokemonById(id, pokemonInfo);
+        if (cashingStatus == CashingStatus.success) {
+          print('cashed');
+        }
       }
     } catch (e) {
       emit(state.copyWith(status: FetchStatus.failure));
