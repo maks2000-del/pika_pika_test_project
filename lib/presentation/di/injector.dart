@@ -40,11 +40,7 @@ void _setUpBloc() {
 }
 
 void _setUpSQLite() async {
-  SqliteDataBaseOpenHelper sqliteDataBaseOpenHelper =
-      SqliteDataBaseOpenHelper();
-
-  Database database = await sqliteDataBaseOpenHelper.initDatabase();
-  i.registerSingleton<Database>(database);
+  Database database = await SqliteDataBaseOpenHelper.initDatabase();
 
   i.registerFactory<SQliteEntityDataSource>(
     () => SQliteEntityDataSource(database),

@@ -16,7 +16,15 @@ const String columnPokemonWeight = 'height';
 const String columnPokemonIsDefault = 'is_default';
 
 class SqliteDataBaseOpenHelper {
-  Future<Database> initDatabase() async {
+  static late final Database _database;
+
+  static Future<void> initialize() async => _database = await initDatabase();
+
+  static Database get database {
+    return _database;
+  }
+
+  static Future<Database> initDatabase() async {
     final database = openDatabase(
       join(await getDatabasesPath(), 'appdb.db'),
       version: 1,

@@ -2,7 +2,9 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pika_pika_test_project/presentation/app/app_themes.dart';
+import 'package:pika_pika_test_project/presentation/pages/main/bloc/home_bloc.dart';
 
 import '../../app/app_themes.dart';
 
@@ -37,35 +39,65 @@ class DetailedInfoPage extends StatelessWidget {
                 onPressed: () => Get.back(),
               ),
             ),
-            body: Padding(
-              padding: const EdgeInsets.fromLTRB(30.0, 40.0, 30.0, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _pokemonAvatar(
-                    state.pokemonInfo.frontImage,
-                    state.connection != ConnectivityResult.none,
-                  ),
-                  Divider(
-                    height: 60.0,
-                    color: Colors.grey[800],
-                  ),
-                  _infoFieldName('Name:'),
-                  _infoFieldProperty(state.pokemonInfo.name),
-                  _infoFieldName('Height:'),
-                  _infoFieldProperty(state.pokemonInfo.height.toString()),
-                  _infoFieldName('Weight:'),
-                  _infoFieldProperty(state.pokemonInfo.weight.toString()),
-                  _infoFieldName('Types:'),
-                  _typesList(
-                    MediaQuery.of(context).size.width - 60.0,
-                    state.pokemonInfo.types,
-                  ),
-                ],
-              ),
-            ),
+            body: state.status == FetchStatus.initial
+                ? _loadingAnimation()
+                : state.status == FetchStatus.failure
+                    ? _noData()
+                    : _body(context, state),
           );
         },
+      ),
+    );
+  }
+
+  Widget _loadingAnimation() {
+    return Center(
+      child: Lottie.asset(
+        'assets/lottie/loading.json',
+        width: 350,
+        height: 200,
+        fit: BoxFit.fill,
+      ),
+    );
+  }
+
+  Widget _body(BuildContext context, DetailedInfoState state) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(30.0, 40.0, 30.0, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _pokemonAvatar(
+            state.pokemonInfo.frontImage,
+            state.connection != ConnectivityResult.none,
+          ),
+          Divider(
+            height: 60.0,
+            color: Colors.grey[800],
+          ),
+          _infoFieldName('Name:'),
+          _infoFieldProperty(state.pokemonInfo.name),
+          _infoFieldName('Height:'),
+          _infoFieldProperty(state.pokemonInfo.height.toString()),
+          _infoFieldName('Weight:'),
+          _infoFieldProperty(state.pokemonInfo.weight.toString()),
+          _infoFieldName('Types:'),
+          _typesList(
+            MediaQuery.of(context).size.width - 60.0,
+            state.pokemonInfo.types,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _noData() {
+    return Center(
+      child: Text(
+        'no data',
+        style: TextStyle(
+          color: darkTheme.textColor,
+        ),
       ),
     );
   }
