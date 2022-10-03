@@ -2,19 +2,18 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import '../../../../domain/di/injector.dart';
 import '../../../../domain/entities/pokemon.dart';
-import '../../../../domain/repositories/cash_data_repository.dart';
-import '../../../../domain/usecases/data_usecase.dart';
-import '../../../di/injector.dart';
+import '../../../../domain/repositories/interfaces/pokemon_data_interface.dart';
 import '../../main/bloc/home_bloc.dart';
 
 part 'detailed_info_event.dart';
 part 'detailed_info_state.dart';
 
 class DetailedInfoBloc extends Bloc<DetailedInfoEvent, DetailedInfoState> {
-  final CashDataRepository _cashDataRepository = i.get<CashDataRepository>();
-
-  final HomeUsecase _homeUsecase = i.get<HomeUsecase>();
+  final ILocalDataRepository _localDataRepository =
+      i.get<ILocalDataRepository>();
+  final IDataRepository _dataRepository = i.get<IDataRepository>();
 
   DetailedInfoBloc() : super(DetailedInfoState.initial()) {
     on<PockemonPicked>(
@@ -32,7 +31,8 @@ class DetailedInfoBloc extends Bloc<DetailedInfoEvent, DetailedInfoState> {
     try {
       if (state.status == FetchStatus.initial) {
         final id = int.parse(event.id);
-        final pokemonInfo = await _homeUsecase.getPokemonById(id);
+
+        final pokemonInfo = await _dataRepository.getPokemonById(id);
         if (pokemonInfo.runtimeType == Pokemon) {
           emit(
             state.copyWith(
@@ -40,11 +40,7 @@ class DetailedInfoBloc extends Bloc<DetailedInfoEvent, DetailedInfoState> {
               pokemonInfo: pokemonInfo,
             ),
           );
-          final cashingStatus =
-              await _cashDataRepository.savePokemonById(id, pokemonInfo);
-          if (cashingStatus == CashingStatus.success) {
-            print('cashed');
-          }
+          await _localDataRepository.savePokemonById(id, pokemonInfo);
         } else {
           emit(state.copyWith(status: FetchStatus.failure));
         }

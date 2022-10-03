@@ -1,4 +1,4 @@
-import 'package:pika_pika_test_project/presentation/utils/string_formatter.dart';
+import '../../presentation/utils/string_formatter.dart';
 
 const nullFieldFromApi = 'unknown';
 
@@ -16,8 +16,6 @@ class Pokemon {
     required this.weight,
     required this.height,
   });
-
-  List<Object> get props => [name, frontImage, types, weight, height];
 
   factory Pokemon.fromApiMap(Map<String, dynamic> map) {
     final resultList = <String>[];

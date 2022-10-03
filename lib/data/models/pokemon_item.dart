@@ -1,11 +1,9 @@
-import 'package:pika_pika_test_project/presentation/utils/string_formatter.dart';
+import '../../presentation/utils/string_formatter.dart';
 
 class PokemonItem {
   String id;
   String name;
   String url;
-
-  List<Object> get props => [id, url, name];
 
   PokemonItem(this.id, this.name, this.url);
 

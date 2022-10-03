@@ -1,11 +1,11 @@
 import 'package:http/http.dart' as http;
 
-import '../../presentation/di/injector.dart';
+import '../../domain/di/injector.dart';
 import 'interfaces/api_data_interface.dart';
 
 const _pokemonLimit = 20;
 
-class RemoteDataSource implements IRemoteDataSource {
+class ApiDataProvider implements IRemoteDataProvider {
   final http.Client httpClient = i.get<http.Client>();
 
   @override
@@ -17,6 +17,7 @@ class RemoteDataSource implements IRemoteDataSource {
         <String, String>{'offset': '$startIndex', 'limit': '$_pokemonLimit'},
       ),
     );
+
     if (response.statusCode == 200) {
       return response;
     } else {
@@ -32,6 +33,7 @@ class RemoteDataSource implements IRemoteDataSource {
         '/api/v2/pokemon/$pokemonId/',
       ),
     );
+
     if (response.statusCode == 200) {
       return response;
     } else {

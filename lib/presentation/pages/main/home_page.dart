@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pika_pika_test_project/presentation/pages/main/bloc/home_bloc.dart';
 
+import '../../../domain/di/injector.dart';
 import '../../app/app_themes.dart';
-import '../../di/injector.dart';
 import 'pokemos_list.dart';
 
 class HomePage extends StatelessWidget {

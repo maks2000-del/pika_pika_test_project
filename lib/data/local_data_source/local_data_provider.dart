@@ -1,12 +1,12 @@
 import 'package:sqflite/sqflite.dart';
 import '../../domain/repositories/cash_data_repository.dart';
-import '../../presentation/utils/sqlite_open_helper.dart';
+import 'helpers/sqlite_open_helper.dart';
 import 'interfaces/i_local_data_source.dart';
 
-class SQliteEntityDataSource implements ILocalDataSourceEntity {
+class LocalDataProvider implements ILocalDataSourceEntity {
   late final Database database;
 
-  SQliteEntityDataSource(this.database);
+  LocalDataProvider(this.database);
 
   @override
   Future<List<Map>> getEntityById(int id) async {
@@ -23,34 +23,11 @@ class SQliteEntityDataSource implements ILocalDataSourceEntity {
 
   @override
   Future<CashingStatus> saveEntityById(
-      int id, Map<String, dynamic> entity) async {
+    int id,
+    Map<String, dynamic> entity,
+  ) async {
     try {
-      await database.insert(
-        tablePokemons,
-        entity,
-      );
-      return CashingStatus.success;
-    } catch (e) {
-      return CashingStatus.failure;
-    }
-  }
-}
-
-class SQliteEntitiesDataSource extends ILocalDataSourceEntities {
-  late final Database database;
-
-  SQliteEntitiesDataSource(this.database);
-
-  @override
-  Future<CashingStatus> saveEntities(
-      List<Map<String, dynamic>> entities) async {
-    try {
-      for (final entity in entities) {
-        await database.insert(
-          tablePokemonItems,
-          entity,
-        );
-      }
+      await database.insert(tablePokemons, entity);
       return CashingStatus.success;
     } catch (e) {
       return CashingStatus.failure;
@@ -66,6 +43,20 @@ class SQliteEntitiesDataSource extends ILocalDataSourceEntities {
       return dbMemorysList;
     } else {
       throw Exception('Error reading from DB');
+    }
+  }
+
+  @override
+  Future<CashingStatus> saveEntities(
+    List<Map<String, dynamic>> entities,
+  ) async {
+    try {
+      for (final entity in entities) {
+        await database.insert(tablePokemonItems, entity);
+      }
+      return CashingStatus.success;
+    } catch (e) {
+      return CashingStatus.failure;
     }
   }
 }

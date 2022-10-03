@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pika_pika_test_project/presentation/pages/detailed_info/bloc/detailed_info_bloc.dart';
 
 import '../../data/models/pokemon_item.dart';
+import '../../domain/di/injector.dart';
 import '../app/app_themes.dart';
-import '../di/injector.dart';
+import '../pages/detailed_info/bloc/detailed_info_bloc.dart';
 import '../pages/detailed_info/detailed_info_page.dart';
 import '../utils/string_formatter.dart';
 

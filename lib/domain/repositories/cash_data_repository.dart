@@ -1,31 +1,27 @@
-import 'package:pika_pika_test_project/data/local_data_source/local_data_source.dart';
-import 'package:pika_pika_test_project/domain/entities/pokemon.dart';
-import 'package:pika_pika_test_project/data/models/pokemon_item.dart';
-import 'package:pika_pika_test_project/domain/repositories/interfaces/pokemon_data_interface.dart';
-
-import '../../presentation/di/injector.dart';
+import '../../data/local_data_source/interfaces/i_local_data_source.dart';
+import '../../data/models/pokemon_item.dart';
+import '../di/injector.dart';
+import '../entities/pokemon.dart';
+import 'interfaces/pokemon_data_interface.dart';
 
 enum CashingStatus { success, failure }
 
 class CashDataRepository implements ILocalDataRepository {
-  CashDataRepository();
+  final ILocalDataSourceEntity _localDataProvider =
+      i.get<ILocalDataSourceEntity>();
 
   @override
   Future<Pokemon> getPokemonById(int pokemonId) async {
-    final entitie =
-        await i.get<SQliteEntityDataSource>().getEntityById(pokemonId);
+    final entitie = await _localDataProvider.getEntityById(pokemonId);
 
     Pokemon pokemonItem = Pokemon.fromDBMap(entitie[0] as Map<String, dynamic>);
-
     return pokemonItem;
   }
 
   @override
   Future<List<PokemonItem>> getPokemonItems([int startIndex = 0]) async {
     final pokemonItems = <PokemonItem>[];
-
-    final dbPokemonItems =
-        await i.get<SQliteEntitiesDataSource>().getEntities();
+    final dbPokemonItems = await _localDataProvider.getEntities();
 
     for (final item in dbPokemonItems) {
       var pokemonItem = PokemonItem.fromMap(item as Map<String, dynamic>);
@@ -38,10 +34,8 @@ class CashDataRepository implements ILocalDataRepository {
   Future<CashingStatus> savePokemonById(int pokemonId, Pokemon pokemon) async {
     final entitie = pokemon.toDBMap(pokemonId);
 
-    final cashingStatus = await i
-        .get<SQliteEntityDataSource>()
-        .saveEntityById(pokemonId, entitie);
-
+    final cashingStatus =
+        await _localDataProvider.saveEntityById(pokemonId, entitie);
     return cashingStatus;
   }
 
@@ -53,8 +47,7 @@ class CashDataRepository implements ILocalDataRepository {
       var pokemonEntitie = item.toDBMap();
       entities.add(pokemonEntitie);
     }
-    final status =
-        await i.get<SQliteEntitiesDataSource>().saveEntities(entities);
+    final status = await _localDataProvider.saveEntities(entities);
     return status;
   }
 }

@@ -13,8 +13,10 @@ import 'bloc/detailed_info_bloc.dart';
 class DetailedInfoPage extends StatelessWidget {
   final DetailedInfoBloc detailedInfoBloc;
 
-  const DetailedInfoPage({Key? key, required this.detailedInfoBloc})
-      : super(key: key);
+  const DetailedInfoPage({
+    Key? key,
+    required this.detailedInfoBloc,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -164,14 +166,5 @@ class DetailedInfoPage extends StatelessWidget {
         itemCount: types.length,
       ),
     );
-  }
-}
-
-class Test extends StatelessWidget {
-  const Test({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

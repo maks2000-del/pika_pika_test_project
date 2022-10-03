@@ -6,11 +6,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 import 'package:stream_transform/stream_transform.dart';
 import '../../../../data/models/pokemon_item.dart';
-import '../../../../domain/repositories/cash_data_repository.dart';
+import '../../../../domain/di/injector.dart';
 import '../../../../domain/repositories/interfaces/pokemon_data_interface.dart';
-import '../../../../domain/repositories/remote_data_repository.dart';
-import '../../../../domain/usecases/data_usecase.dart';
-import '../../../di/injector.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -24,7 +21,9 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 }
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final CashDataRepository _cashDataRepository = i.get<CashDataRepository>();
+  final ILocalDataRepository _localDataRepository =
+      i.get<ILocalDataRepository>();
+  final IDataRepository _dataRepository = i.get<IDataRepository>();
 
   HomeBloc() : super(const HomeState()) {
     on<PokemonsFetched>(
@@ -41,22 +40,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       final connectivity = await Connectivity().checkConnectivity();
 
-      final IDataRepository dataRepository =
-          (connectivity != ConnectivityResult.none)
-              ? i.get<RemoteDataRepository>()
-              : i.get<CashDataRepository>();
-
-      final HomeUsecase homeUsecase = HomeUsecase(dataRepository);
       if (state.status == FetchStatus.initial) {
-        final pokemonItems = await homeUsecase.getPokemonItems();
-
+        final pokemonItems = await _dataRepository.getPokemonItems();
         if (connectivity != ConnectivityResult.none) {
-          final cashingStatus =
-              await _cashDataRepository.savePokemonItems(pokemonItems);
-
-          if (cashingStatus == CashingStatus.success) {
-            print('cashed');
-          }
+          await _localDataRepository.savePokemonItems(pokemonItems);
         }
         return emit(
           state.copyWith(
@@ -67,11 +54,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         );
       }
       if (connectivity != ConnectivityResult.none) {
-        final pokemonItems = await i
-            .get<HomeUsecase>()
-            .getPokemonItems(state.pokemonItems.length);
-        final cashingStatus =
-            await _cashDataRepository.savePokemonItems(pokemonItems);
+        final pokemonItems =
+            await _dataRepository.getPokemonItems(state.pokemonItems.length);
+
+        await _localDataRepository.savePokemonItems(pokemonItems);
         pokemonItems.isEmpty
             ? emit(state.copyWith(hasReachedMax: true))
             : emit(
