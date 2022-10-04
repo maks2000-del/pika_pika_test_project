@@ -2,10 +2,11 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:pika_pika_test_project/core_ui/widgets/no_data_screen.dart';
 import 'package:pika_pika_test_project/presentation/app/app_themes.dart';
 import 'package:pika_pika_test_project/presentation/pages/main/bloc/home_bloc.dart';
 
-import '../../../core_ui/widgets/loading_page.dart';
+import '../../../core_ui/widgets/loading_screen.dart';
 import '../../app/app_themes.dart';
 
 import 'bloc/detailed_info_bloc.dart';
@@ -44,7 +45,7 @@ class DetailedInfoPage extends StatelessWidget {
             body: state.status == FetchStatus.initial
                 ? const LoadingPage()
                 : state.status == FetchStatus.failure
-                    ? _noData()
+                    ? const NoDataScreen(textToPrint: 'no data on the device')
                     : _body(context, state),
           );
         },
@@ -58,46 +59,53 @@ class DetailedInfoPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _pokemonAvatar(
-            state.pokemonInfo.frontImage,
-            state.connection != ConnectivityResult.none,
+          PokemonAvatar(
+            imgNetworkLink: state.pokemonInfo.frontImage,
+            isOnline: state.connection != ConnectivityResult.none,
           ),
           Divider(
             height: 60.0,
             color: Colors.grey[800],
           ),
-          _infoFieldName('Name:'),
-          _infoFieldProperty(state.pokemonInfo.name),
-          _infoFieldName('Height:'),
-          _infoFieldProperty(state.pokemonInfo.height.toString()),
-          _infoFieldName('Weight:'),
-          _infoFieldProperty(state.pokemonInfo.weight.toString()),
-          _infoFieldName('Types:'),
-          _typesList(
-            MediaQuery.of(context).size.width - 60.0,
-            state.pokemonInfo.types,
+          const FiledName(name: 'Name:'),
+          FieldProperty(
+            property: state.pokemonInfo.name,
+          ),
+          const FiledName(name: 'Height:'),
+          FieldProperty(
+            property: state.pokemonInfo.height.toString(),
+          ),
+          const FiledName(name: 'Weight:'),
+          FieldProperty(
+            property: state.pokemonInfo.weight.toString(),
+          ),
+          const FiledName(name: 'Types:'),
+          ListOfFields(
+            boundWidth: MediaQuery.of(context).size.width - 60.0,
+            types: state.pokemonInfo.types,
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _noData() {
-    return Center(
-      child: Text(
-        'no data on the device',
-        style: TextStyle(
-          color: darkTheme.textColor,
-        ),
-      ),
-    );
-  }
+class PokemonAvatar extends StatelessWidget {
+  final String imgNetworkLink;
+  final bool isOnline;
 
-  Widget _pokemonAvatar(String imgNetworkLink, bool online) {
+  const PokemonAvatar({
+    Key? key,
+    required this.imgNetworkLink,
+    required this.isOnline,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: CircleAvatar(
         backgroundColor: darkTheme.actionColor,
-        child: online && imgNetworkLink.isNotEmpty
+        child: isOnline && imgNetworkLink.isNotEmpty
             ? Image.network(
                 imgNetworkLink,
               )
@@ -106,12 +114,19 @@ class DetailedInfoPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _infoFieldName(String fieldName) {
+class FiledName extends StatelessWidget {
+  final String name;
+
+  const FiledName({Key? key, required this.name}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
       child: Text(
-        fieldName,
+        name,
         style: TextStyle(
           color: darkTheme.textColor,
           letterSpacing: 1.0,
@@ -119,10 +134,17 @@ class DetailedInfoPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _infoFieldProperty(String? filedProperty) {
+class FieldProperty extends StatelessWidget {
+  final String? property;
+
+  const FieldProperty({Key? key, required this.property}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Text(
-      filedProperty ?? 'unknown',
+      property ?? 'unknown',
       style: TextStyle(
         color: darkTheme.actionColor,
         letterSpacing: 1.0,
@@ -131,8 +153,19 @@ class DetailedInfoPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _typesList(double boundWidth, List<String> types) {
+class ListOfFields extends StatelessWidget {
+  final double boundWidth;
+  final List<String> types;
+  const ListOfFields({
+    Key? key,
+    required this.boundWidth,
+    required this.types,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
       height: 50.0,
       width: boundWidth,

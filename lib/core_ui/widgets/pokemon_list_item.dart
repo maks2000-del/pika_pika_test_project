@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 
 import '../../data/models/pokemon_item.dart';
 import '../../di/injector.dart';
-import '../app/app_themes.dart';
-import '../pages/detailed_info/bloc/detailed_info_bloc.dart';
-import '../pages/detailed_info/detailed_info_page.dart';
+import '../../presentation/app/app_themes.dart';
+import '../../presentation/pages/detailed_info/bloc/detailed_info_bloc.dart';
+import '../../presentation/pages/detailed_info/detailed_info_page.dart';
 import '../../core_ui/converters/string_formatter.dart';
 
 class PokemonListItem extends StatelessWidget {

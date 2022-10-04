@@ -1,9 +1,13 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pika_pika_test_project/core_ui/widgets/loading_page.dart';
-import 'package:pika_pika_test_project/presentation/widgets/pokemon_list_item.dart';
 
-import '../../widgets/bottom_loader.dart';
+import '../../../core_ui/widgets/bottom_loader.dart';
+import '../../../core_ui/widgets/loading_screen.dart';
+import '../../../core_ui/widgets/pokemon_list_item.dart';
+import '../../../di/injector.dart';
+import '../../../domain/repositories/data_repository.dart';
+import '../../../domain/repositories/interfaces/pokemon_data_interface.dart';
 import 'bloc/home_bloc.dart';
 
 class PokemonsList extends StatefulWidget {
@@ -15,11 +19,25 @@ class PokemonsList extends StatefulWidget {
 
 class _PokemonsListState extends State<PokemonsList> {
   final _scrollController = ScrollController();
+  late final _subscription;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+
+    _subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      i.unregister<IDataRepository>();
+      final IDataRepository dataRepository = (result != ConnectivityResult.none)
+          ? i.get<IRemoteDataRepository>()
+          : i.get<ILocalDataRepository>();
+
+      i.registerFactory<IDataRepository>(
+        () => DataReository(dataRepository),
+      );
+    });
   }
 
   @override
@@ -28,16 +46,23 @@ class _PokemonsListState extends State<PokemonsList> {
       builder: (context, state) {
         switch (state.status) {
           case FetchStatus.failure:
-            return const Center(child: Text('failed to fetch data'));
+            return const Center(
+              child: Text('failed to fetch data'),
+            );
           case FetchStatus.success:
             if (state.pokemonItems.isEmpty) {
-              return const Center(child: Text('no pokemons :c'));
+              return const Center(
+                child: Text('no pokemons :c'),
+              );
             }
             return ListView.builder(
               itemBuilder: (BuildContext context, int index) {
                 return index >= state.pokemonItems.length
                     ? const BottomLoader()
-                    : PokemonListItem(pokemonItem: state.pokemonItems[index]);
+                    : PokemonListItem(
+                        key: Key(state.pokemonItems[index].id),
+                        pokemonItem: state.pokemonItems[index],
+                      );
               },
               itemCount: state.hasReachedMax
                   ? state.pokemonItems.length
@@ -56,6 +81,7 @@ class _PokemonsListState extends State<PokemonsList> {
     _scrollController
       ..removeListener(_onScroll)
       ..dispose();
+    _subscription.cancel();
     super.dispose();
   }
 
