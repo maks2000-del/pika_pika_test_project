@@ -13,21 +13,23 @@ import '../../domain/repositories/remote_data_repository.dart';
 import '../../presentation/pages/detailed_info/bloc/detailed_info_bloc.dart';
 import '../../presentation/pages/main/bloc/home_bloc.dart';
 import '../../data/local_data_source/helpers/sqlite_open_helper.dart';
-import '../repositories/data_repository.dart';
+import '../domain/repositories/data_repository.dart';
 
 GetIt get i => GetIt.instance;
 
-Future<void> initInjector() async {
+Future<int> initInjector() async {
   i.registerSingleton<http.Client>(
     http.Client(),
   );
 
-  _setUpProviders();
-  _setUpRepository();
-  _setUpBloc();
+  await _setUpProviders();
+  await _setUpRepository();
+  await _setUpBloc();
+
+  return 0;
 }
 
-void _setUpBloc() {
+Future<void> _setUpBloc() async {
   i.registerFactory(
     () => HomeBloc()
       ..add(
@@ -42,8 +44,9 @@ void _setUpBloc() {
   );
 }
 
-void _setUpProviders() async {
+Future<void> _setUpProviders() async {
   Database database = await SqliteDataBaseOpenHelper.initDatabase();
+  await SqliteDataBaseOpenHelper.initialize();
 
   i.registerFactory<ILocalDataSourceEntity>(
     () => LocalDataProvider(database),
@@ -53,12 +56,8 @@ void _setUpProviders() async {
   );
 }
 
-void _setUpRepository() async {
+Future<void> _setUpRepository() async {
   final connectivity = await Connectivity().checkConnectivity();
-  final IDataRepository dataRepository =
-      (connectivity != ConnectivityResult.none)
-          ? i.get<RemoteDataRepository>()
-          : i.get<CashDataRepository>();
 
   i.registerSingleton<ILocalDataRepository>(
     CashDataRepository(),
@@ -66,6 +65,11 @@ void _setUpRepository() async {
   i.registerSingleton<IRemoteDataRepository>(
     RemoteDataRepository(),
   );
+  final IDataRepository dataRepository =
+      (connectivity != ConnectivityResult.none)
+          ? i.get<IRemoteDataRepository>()
+          : i.get<ILocalDataRepository>();
+
   i.registerFactory<IDataRepository>(
     () => DataReository(dataRepository),
   );

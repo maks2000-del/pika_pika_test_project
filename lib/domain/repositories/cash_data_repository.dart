@@ -1,6 +1,6 @@
 import '../../data/local_data_source/interfaces/i_local_data_source.dart';
 import '../../data/models/pokemon_item.dart';
-import '../di/injector.dart';
+import '../../di/injector.dart';
 import '../entities/pokemon.dart';
 import 'interfaces/pokemon_data_interface.dart';
 

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import '../../data/models/pokemon_item.dart';
 import '../../data/remote_data_sources/interfaces/api_data_interface.dart';
-import '../di/injector.dart';
+import '../../di/injector.dart';
 import '../entities/pokemon.dart';
 import 'interfaces/pokemon_data_interface.dart';
 

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import '../../../../domain/di/injector.dart';
+import '../../../../di/injector.dart';
 import '../../../../domain/entities/pokemon.dart';
 import '../../../../domain/repositories/interfaces/pokemon_data_interface.dart';
 import '../../main/bloc/home_bloc.dart';

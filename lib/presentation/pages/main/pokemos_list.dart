@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pika_pika_test_project/core_ui/widgets/loading_page.dart';
 import 'package:pika_pika_test_project/presentation/widgets/pokemon_list_item.dart';
 
 import '../../widgets/bottom_loader.dart';
@@ -44,7 +45,7 @@ class _PokemonsListState extends State<PokemonsList> {
               controller: _scrollController,
             );
           case FetchStatus.initial:
-            return const Center(child: CircularProgressIndicator());
+            return const LoadingPage();
         }
       },
     );

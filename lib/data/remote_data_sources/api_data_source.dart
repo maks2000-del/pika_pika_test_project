@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 
-import '../../domain/di/injector.dart';
+import '../../di/injector.dart';
 import 'interfaces/api_data_interface.dart';
 
 const _pokemonLimit = 20;

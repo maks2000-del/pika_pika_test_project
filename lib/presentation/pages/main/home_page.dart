@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pika_pika_test_project/presentation/pages/main/bloc/home_bloc.dart';
 
-import '../../../domain/di/injector.dart';
+import '../../../di/injector.dart';
 import '../../app/app_themes.dart';
 import 'pokemos_list.dart';
 
@@ -11,15 +11,33 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HomeBloc _homeBlock = i.get<HomeBloc>();
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('Pokemons')),
         backgroundColor: darkTheme.secondaryBackgroundColor,
       ),
-      body: BlocProvider(
-        create: (_) => _homeBlock,
-        child: const PokemonsList(),
+      body: FutureBuilder(
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(
+                  '${snapshot.error} occurred',
+                  style: const TextStyle(fontSize: 18),
+                ),
+              );
+            } else if (snapshot.hasData) {
+              return BlocProvider(
+                create: (_) => i.get<HomeBloc>(),
+                child: const PokemonsList(),
+              );
+            }
+          }
+          return Container(
+            color: darkTheme.secondaryBackgroundColor,
+          );
+        },
+        future: initInjector(),
       ),
     );
   }

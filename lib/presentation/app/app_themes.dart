@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_theme.dart';
+import '../../core_ui/theme/app_theme.dart';
 
 final darkTheme = AppTheme(
   primaryBackgroundColor: Colors.grey[900]!,

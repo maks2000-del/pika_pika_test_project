@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core_ui/theme/theme_provider.dart';
 import '../pages/main/home_page.dart';
-import '../theme/theme_provider.dart';
 import 'app_themes.dart';
 
 class App extends StatelessWidget {

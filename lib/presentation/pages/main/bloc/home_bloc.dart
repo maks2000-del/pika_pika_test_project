@@ -6,7 +6,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 import 'package:stream_transform/stream_transform.dart';
 import '../../../../data/models/pokemon_item.dart';
-import '../../../../domain/di/injector.dart';
+import '../../../../di/injector.dart';
 import '../../../../domain/repositories/interfaces/pokemon_data_interface.dart';
 
 part 'home_event.dart';

@@ -1,4 +1,4 @@
-import '../../presentation/utils/string_formatter.dart';
+import '../../core_ui/converters/string_formatter.dart';
 
 class PokemonItem {
   String id;

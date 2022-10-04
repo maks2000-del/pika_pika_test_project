@@ -2,10 +2,10 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:pika_pika_test_project/presentation/app/app_themes.dart';
 import 'package:pika_pika_test_project/presentation/pages/main/bloc/home_bloc.dart';
 
+import '../../../core_ui/widgets/loading_page.dart';
 import '../../app/app_themes.dart';
 
 import 'bloc/detailed_info_bloc.dart';
@@ -42,23 +42,12 @@ class DetailedInfoPage extends StatelessWidget {
               ),
             ),
             body: state.status == FetchStatus.initial
-                ? _loadingAnimation()
+                ? const LoadingPage()
                 : state.status == FetchStatus.failure
                     ? _noData()
                     : _body(context, state),
           );
         },
-      ),
-    );
-  }
-
-  Widget _loadingAnimation() {
-    return Center(
-      child: Lottie.asset(
-        'assets/lottie/loading.json',
-        width: 350,
-        height: 200,
-        fit: BoxFit.fill,
       ),
     );
   }
@@ -96,7 +85,7 @@ class DetailedInfoPage extends StatelessWidget {
   Widget _noData() {
     return Center(
       child: Text(
-        'no data',
+        'no data on the device',
         style: TextStyle(
           color: darkTheme.textColor,
         ),
