@@ -7,8 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:pika_pika_test_project/presentation/app/app.dart';
+import 'package:pika_pika_test_project/features/pokemon_app/presentation/app/app.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
