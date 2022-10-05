@@ -1,11 +1,11 @@
 import 'package:pika_pika_test_project/features/pokemon_app/data/models/sqlDtos/pokemon_sql_dto.dart';
 
 import '../../../../injector.dart';
-import '../../data/local_data_source/interfaces/i_local_data_source.dart';
-import '../../data/models/sqlDtos/pokemon_item_sql_dto.dart';
-import '../entities/pokemon_item.dart';
-import '../entities/pokemon.dart';
-import 'interfaces/pokemon_data_interface.dart';
+import 'interfaces/i_local_data_source.dart';
+import '../models/sqlDtos/pokemon_item_sql_dto.dart';
+import '../../domain/entities/pokemon_item.dart';
+import '../../domain/entities/pokemon.dart';
+import '../../domain/repositories/interfaces/pokemon_data_interface.dart';
 
 enum CashingStatus { success, failure }
 

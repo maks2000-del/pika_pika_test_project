@@ -1,4 +1,4 @@
-import '../../../domain/repositories/cash_data_repository.dart';
+import '../cash_data_repository.dart';
 
 abstract class ILocalDataSourceEntity {
   Future<dynamic> getEntityById(int id);

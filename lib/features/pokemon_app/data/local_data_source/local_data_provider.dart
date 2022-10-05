@@ -1,5 +1,5 @@
 import 'package:sqflite/sqflite.dart';
-import '../../domain/repositories/cash_data_repository.dart';
+import 'cash_data_repository.dart';
 import 'helpers/sqlite_open_helper.dart';
 import 'interfaces/i_local_data_source.dart';
 

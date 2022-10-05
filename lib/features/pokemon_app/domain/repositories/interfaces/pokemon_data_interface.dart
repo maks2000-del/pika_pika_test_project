@@ -1,6 +1,6 @@
 import '../../entities/pokemon.dart';
 import '../../entities/pokemon_item.dart';
-import '../cash_data_repository.dart';
+import '../../../data/local_data_source/cash_data_repository.dart';
 
 abstract class IDataRepository {
   Future<Pokemon> getPokemonById(int pokemonId);

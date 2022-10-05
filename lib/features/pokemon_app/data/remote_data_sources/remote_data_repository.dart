@@ -4,10 +4,10 @@ import 'package:pika_pika_test_project/features/pokemon_app/data/models/apiDtos/
 import 'package:pika_pika_test_project/features/pokemon_app/data/models/apiDtos/pokemon_item_api_dto.dart';
 
 import '../../../../injector.dart';
-import '../entities/pokemon_item.dart';
-import '../../data/remote_data_sources/interfaces/api_data_interface.dart';
-import '../entities/pokemon.dart';
-import 'interfaces/pokemon_data_interface.dart';
+import '../../domain/entities/pokemon_item.dart';
+import 'interfaces/api_data_interface.dart';
+import '../../domain/entities/pokemon.dart';
+import '../../domain/repositories/interfaces/pokemon_data_interface.dart';
 
 class RemoteDataRepository implements IRemoteDataRepository {
   final IRemoteDataProvider _remoteDataRepository =

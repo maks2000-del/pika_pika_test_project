@@ -8,10 +8,10 @@ import 'features/pokemon_app/data/local_data_source/interfaces/i_local_data_sour
 import 'features/pokemon_app/data/local_data_source/local_data_provider.dart';
 import 'features/pokemon_app/data/remote_data_sources/api_data_source.dart';
 import 'features/pokemon_app/data/remote_data_sources/interfaces/api_data_interface.dart';
-import 'features/pokemon_app/domain/repositories/cash_data_repository.dart';
+import 'features/pokemon_app/data/local_data_source/cash_data_repository.dart';
 import 'features/pokemon_app/domain/repositories/data_repository.dart';
 import 'features/pokemon_app/domain/repositories/interfaces/pokemon_data_interface.dart';
-import 'features/pokemon_app/domain/repositories/remote_data_repository.dart';
+import 'features/pokemon_app/data/remote_data_sources/remote_data_repository.dart';
 import 'features/pokemon_app/presentation/pages/detailed_info/bloc/detailed_info_bloc.dart';
 import 'features/pokemon_app/presentation/pages/main/bloc/home_bloc.dart';
 
